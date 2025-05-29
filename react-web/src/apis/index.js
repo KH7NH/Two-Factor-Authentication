@@ -24,3 +24,8 @@ export const fetchUserAPI = async () => {
 
   return user
 }
+
+export const get2FA_QRCodeAPI = async (userId) => {
+  const res =  await authorizedAxiosInstance.get(`${API_ROOT}/v1/users/${userId}/get_2fa_qr_code`)
+  return res.data
+}

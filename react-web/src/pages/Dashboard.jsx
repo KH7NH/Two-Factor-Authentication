@@ -64,6 +64,7 @@ function Dashboard() {
       <Setup2FA
         isOpen={openSetup2FA}
         toggleOpen={setOpenSetup2FA}
+        user={user}
       />
 
       {/* Modal yêu cầu xác thực 2FA */}
