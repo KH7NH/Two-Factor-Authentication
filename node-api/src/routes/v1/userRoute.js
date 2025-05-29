@@ -1,4 +1,3 @@
-// Author: TrungQuanDev | https://youtube.com/@trungquandev
 import express from 'express'
 import { userController } from '~/controllers/userController'
 
@@ -13,5 +12,7 @@ Router.route('/:id/logout')
 Router.route('/:id')
   .get(userController.getUser)
 
+Router.route('/:id/get_2fa_qr_code')
+  .get(userController.get2FA_QRCode)
 
 export const userRoute = Router

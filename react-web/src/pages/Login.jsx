@@ -1,4 +1,3 @@
-// Author: TrungQuanDev | https://youtube.com/@trungquandev
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import { Card as MuiCard } from '@mui/material'

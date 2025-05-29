@@ -1,4 +1,3 @@
-// Author: TrungQuanDev | https://youtube.com/@trungquandev
 import axios from 'axios'
 import { toast } from 'react-toastify'
 

@@ -1,5 +1,4 @@
 /* eslint-disable no-console */
-// Author: TrungQuanDev | https://youtube.com/@trungquandev
 import 'dotenv/config'
 import express from 'express'
 import cors from 'cors'
