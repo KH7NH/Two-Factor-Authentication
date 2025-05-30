@@ -119,13 +119,17 @@ const setup2FA = async (req, res) => {
     }
 
     // B3: Nếu user đã có secret key thì ta sẽ kiểm tra OTP token từ client gửi lên
-    const clientOTPToken = req.body.otp_token
+    const clientOTPToken = req.body.otpToken
+    if (!clientOTPToken) {
+      res.status(StatusCodes.NOT_FOUND).json({ message: 'OTP Token not found' })
+      return
+    }
     const isValid = authenticator.verify({
       token: clientOTPToken,
       secret: twoFactorSecretKey.value
     })
     if (!isValid) {
-      res.status(StatusCodes.NOT_FOUND).json({ message: 'Isvalid OTP Token' })
+      res.status(StatusCodes.NOT_ACCEPTABLE).json({ message: 'Isvalid OTP Token' })
       return
     }
 
@@ -161,7 +165,7 @@ const setup2FA = async (req, res) => {
       // B6: Trả về dữ liệu cần thiết cho phía FE
       res.status(StatusCodes.OK).json({
         ...pickUser(updatedUser),
-        is_2fa_verified: newUserSession.newUserSession,
+        is_2fa_verified: newUserSession.is_2fa_verified,
         last_login_at: newUserSession.last_login_at
       })
 
