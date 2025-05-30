@@ -7,7 +7,7 @@ import Zoom from '@mui/material/Zoom'
 import Alert from '@mui/material/Alert'
 import { useForm } from 'react-hook-form'
 import Typography from '@mui/material/Typography'
-import TrungQuanDevIcon from '../assets/trungquandev-logo.png'
+import TrungQuanDevIcon from '../assets/logo_white.png'
 import { useNavigate } from 'react-router-dom'
 import { loginAPI } from '~/apis'
 
