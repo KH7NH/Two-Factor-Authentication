@@ -207,10 +207,67 @@ const setup2FA = async (req, res) => {
   }
 }
 
+const verify2FA = async (req, res) => {
+  try {
+    // B1: Lấy thông tin user từ bảng users
+    const user = await UserDB.findOne({ _id: req.params.id })
+    if (!user) {
+      res.status(StatusCodes.NOT_FOUND).json({ message: 'User not found!' })
+      return
+    }
+    // B2: Lấy secret key của user từ bảng 2fa_secret_keys
+    const twoFactorSecretKey = await TwoFactorSecretKeyDB.findOne({ user_id: user._id })
+    if (!twoFactorSecretKey) {
+      res.status(StatusCodes.NOT_FOUND).json({ message: 'Two-factor Secret Key not found' })
+      return
+    }
+
+    // B3: Nếu user đã có secret key thì ta sẽ kiểm tra OTP token từ client gửi lên
+    const clientOTPToken = req.body.otpToken
+    if (!clientOTPToken) {
+      res.status(StatusCodes.NOT_FOUND).json({ message: 'OTP Token not found' })
+      return
+    }
+    const isValid = authenticator.verify({
+      token: clientOTPToken,
+      secret: twoFactorSecretKey.value
+    })
+    if (!isValid) {
+      res.status(StatusCodes.NOT_ACCEPTABLE).json({ message: 'Isvalid OTP Token' })
+      return
+    }
+    // B4: Nếu OTP token hợp lệ thì bước xác thực 2FA thành công, Cập nhật lại phiên đăng nhập hợp lệ cho user
+    const updatedUserSession = await UserSessionDB.update({
+      user_id: user._id, 
+      device_id: req.headers['user-agent']
+    },
+  {
+    $set: { is_2fa_verified: true}
+  },
+  {
+    returnUpdatedDocs: true
+  }
+  )
+  // Tương tự ở hàm setup2FA bên trên. Kéo lên đọc sẽ hiểu vì sao cần dòng này
+  UserSessionDB.compactDatafileAsync()
+
+  // B5: Trả về dữ liệu cần thiết cho phía FE
+    res.status(StatusCodes.OK).json({
+      ...pickUser(user),
+      is_2fa_verified: updatedUserSession.is_2fa_verified,
+      last_login_at: updatedUserSession.last_login_at
+    })
+  } catch (error) {
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(error)
+
+  }
+}
+
 export const userController = {
   login,
   getUser,
   logout,
   get2FA_QRCode,
-  setup2FA
+  setup2FA,
+  verify2FA
 }
