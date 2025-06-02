@@ -79,7 +79,7 @@ function Dashboard() {
 
       {/* Modal yêu cầu xác thực 2FA */}
       {/* Với điều kiện user đã bật tính năng 2FA, và user chưa xác thực 2FA ngay sau khi đăng nhập ở lần tiếp theo */}
-      {/* {user.require_2fa && !user.is_2fa_verified && <Require2FA />} */}
+      {user.require_2fa && !user.is_2fa_verified && <Require2FA />}
 
       <Box>
         <a style={{ color: 'inherit', textDecoration: 'none' }} href='https://youtube.com/@trungquandev' target='_blank' rel='noreferrer'>

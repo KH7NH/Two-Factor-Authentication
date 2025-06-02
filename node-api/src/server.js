@@ -31,7 +31,7 @@ const START_SERVER = () => {
   // Học về biến môi trường ENV ở đây: https://youtu.be/Vgr3MWb7aOw
   const LOCAL_DEV_APP_PORT = 8017
   const LOCAL_DEV_APP_HOST = 'localhost'
-  const AUTHOR = 'TrungQuanDev'
+  const AUTHOR = 'Duckhanhdev'
 
   // Môi trường Production
   if (process.env.BUILD_MODE === 'production') {
